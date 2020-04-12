@@ -1,0 +1,34 @@
+# This workflow will do a clean install of node dependencies, build the source code and deploy the artifacts to the gh-pages branch
+# For more information see: https://help.github.com/actions/language-and-framework-guides/using-nodejs-with-github-actions
+
+name: Github Pages CI/CD
+
+on:
+  push:
+    branches: [ master ]
+
+jobs:
+  build:
+
+    runs-on: ubuntu-latest
+
+    strategy:
+      matrix:
+        node-version: [10.x]
+
+    steps:
+    - uses: actions/checkout@v2
+    - name: Use Node.js ${{ matrix.node-version }}
+      uses: actions/setup-node@v1
+      with:
+        node-version: ${{ matrix.node-version }}
+    - run: |
+        npm run build:ci
+        git config user.name ${{ secrets.CI_NAME }}
+        git config user.email ${{ secrets.CI_EMAIL }}
+        git checkout -b gh-pages
+        git --work-tree='./dist' add . 
+        git commit -m 'Generate artifacts ${{ github.sha }}' 
+        git push origin gh-pages -f
+      env:
+        CI: true
