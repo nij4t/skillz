@@ -3,8 +3,8 @@
   "version": "0.1.0",
   "description": "Displays radar chart with languages",
   "scripts": {
-    "build": "parcel build public/index.html --public-url /skillz",
-    "deploy": "git --work-tree='./dist' add . && git commit -m 'Generate artifacts' && git push origin gh-pages"
+    "build": "parcel build public/index.html",
+    "build:ci": "parcel build public/index.html --public-url /skillz"
   },
   "author": "",
   "license": "ISC",
